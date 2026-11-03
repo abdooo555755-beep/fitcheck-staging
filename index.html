@@ -1,413 +1,110 @@
-Fs<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FITCHECK — Less shopping. More style.</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0c0e">
+<title>FITCHECK — Personal AI Fashion Assistant</title>
 <style>
-:root{--bg:#0c0d0f;--panel:#17191d;--line:#30343a;--text:#f5f5f0;--muted:#a5a8ad;--lime:#d6ff64}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.shell{max-width:1150px;margin:auto;padding:22px}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 0 24px;border-bottom:1px solid var(--line)}
-.brand{font-size:22px;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:10px}
-.mark{background:var(--lime);color:#111;padding:9px 12px;border-radius:12px}
-.pill{background:var(--panel);border:1px solid var(--line);color:white;padding:10px 15px;border-radius:30px}
-.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;padding:45px 0 30px}
-.eyebrow{color:var(--lime);font-size:12px;letter-spacing:3px;font-weight:bold}
-h1{font-size:clamp(38px,6vw,65px);line-height:1.1;margin:16px 0}
-p{color:var(--muted);line-height:1.8}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
-.primary{background:var(--lime);color:#111;font-weight:bold;border:0;border-radius:12px;padding:14px 20px}
-.secondary{background:var(--panel);color:white;border:1px solid var(--line);border-radius:12px;padding:14px 20px}
-.art{height:260px;border:1px solid var(--line);border-radius:25px;background:radial-gradient(circle at 70% 25%,#46532d,transparent 40%),linear-gradient(135deg,#292c30,#111);display:grid;place-items:center;font-size:22px;font-weight:900;color:var(--lime);letter-spacing:2px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:15px 0 35px}
-.stat,.item,.look{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
-.stat strong{display:block;font-size:27px}.stat span{font-size:12px;color:var(--muted)}
-.section-head{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin:25px 0 15px}
-h2{margin:0 0 7px}.tabs{display:flex;gap:7px;flex-wrap:wrap}
-.tab{background:transparent;border:1px solid var(--line);color:var(--muted);padding:9px 13px;border-radius:30px}
-.tab.active{background:var(--lime);color:#111}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
-.item{padding:0;overflow:hidden;position:relative}
-.visual{height:155px;background:linear-gradient(140deg,#292c30,#111);display:grid;place-items:center;font-size:65px}
-.visual img{width:100%;height:100%;object-fit:cover}
-.item-body{padding:13px}.item-title{font-weight:bold;margin-bottom:7px}
-.meta{font-size:12px;color:var(--muted)}
-.delete{position:absolute;top:8px;left:8px;background:#111c;color:white;border:0;border-radius:50%;width:28px;height:28px}
-.add-card{background:#111315;border:1px dashed #555;border-radius:16px;color:var(--lime);min-height:220px;font-size:30px}
-.outfit-panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:35px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-select,input{background:#101114;color:white;border:1px solid var(--line);padding:12px;border-radius:10px}
-.results{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.look h3{margin-top:0}.look small{color:var(--muted);line-height:1.7}
-.modal-back{display:none;position:fixed;inset:0;background:#000c;z-index:5;align-items:center;justify-content:center;padding:15px}
-.modal-back.open{display:flex}
-.modal{width:min(500px,100%);background:#191b1f;border:1px solid var(--line);border-radius:20px;padding:22px;max-height:90vh;overflow:auto}
-.field{display:flex;flex-direction:column;gap:7px;margin:14px 0}
-.field label{font-size:13px;color:var(--muted)}
-.field input,.field select{width:100%}
-.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
-.preview{height:100px;background:#101114;display:grid;place-items:center;margin:12px 0;border-radius:10px;overflow:hidden;color:var(--muted)}
-.preview img{height:100%;max-width:100%}
-.toast{display:none;position:fixed;bottom:20px;left:20px;background:var(--lime);color:#111;padding:13px 18px;border-radius:12px;font-weight:bold;z-index:10}
-footer{color:var(--muted);border-top:1px solid var(--line);padding:20px 0;font-size:12px}
-@media(max-width:750px){.hero{grid-template-columns:1fr}.art{height:180px}.grid{grid-template-columns:repeat(2,1fr)}.results{grid-template-columns:1fr}}
-@media(max-width:430px){.shell{padding:14px}.visual{height:125px}.stats{gap:7px}.stat{padding:10px}}
-
-.auth-panel{max-width:460px;margin:35px auto;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px}
-.auth-panel h2{margin-bottom:8px}.auth-panel .field{margin:12px 0}
-.auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.auth-note{font-size:12px;min-height:20px;color:var(--lime)}
-.userbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-#mainApp[hidden],#authPanel[hidden]{display:none!important}
-
+:root{--bg:#0b0c0e;--panel:#15171b;--panel2:#1d2025;--line:#30343a;--text:#f5f5f0;--muted:#a2a7af;--lime:#d8ff68;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
+.wrap{max-width:1200px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:8px 0 18px}.brand{font-size:22px;font-weight:900;letter-spacing:2px}.mark{display:inline-block;background:var(--lime);color:#111;border-radius:10px;padding:8px 11px;margin-left:8px}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.muted{color:var(--muted)}.tiny{font-size:12px}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:11px}.btn.primary{background:var(--lime);color:#111;border-color:var(--lime);font-weight:bold}.btn.ghost{background:transparent}.btn.danger{color:var(--red)}.field{background:#101215;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:11px;min-width:0}.auth{max-width:440px;margin:7vh auto}.panel,.stat,.card,.look{background:var(--panel);border:1px solid var(--line);border-radius:16px}.auth .panel{padding:24px}.auth input{width:100%;margin:7px 0 14px}.hidden{display:none!important}.eyebrow{color:var(--lime);font-size:11px;letter-spacing:2px;font-weight:bold}.hero{padding:28px;border:1px solid var(--line);border-radius:20px;background:radial-gradient(circle at 15% 15%,#343e20,transparent 36%),linear-gradient(135deg,#191c20,#101114);display:flex;justify-content:space-between;align-items:center;gap:20px}.hero h1{font-size:clamp(34px,5vw,55px);line-height:1.15;margin:12px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0 24px}.stat{padding:14px}.stat b{display:block;font-size:25px;margin-bottom:4px}.layout{display:grid;grid-template-columns:215px 1fr;gap:20px}.nav{position:sticky;top:12px;align-self:start;background:var(--panel);border:1px solid var(--line);padding:9px;border-radius:16px}.nav button{display:block;width:100%;text-align:right;border:0;background:transparent;color:var(--muted);padding:12px;border-radius:10px}.nav button.active,.nav button:hover{background:var(--panel2);color:var(--lime)}.content{min-width:0}.page{min-height:240px}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:7px 0 15px}.sectionhead h2{margin:0 0 5px}.sectionhead p{margin:0}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tools .field{min-width:140px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.card{overflow:hidden}.photo{height:155px;background:linear-gradient(145deg,#292d32,#101215);display:grid;place-items:center;color:var(--lime);font-size:48px}.photo img{width:100%;height:100%;object-fit:contain}.cardbody{padding:12px}.cardbody b{display:block;margin-bottom:6px}.cardactions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.cardactions .btn{font-size:11px;padding:7px 9px}.empty{padding:30px;text-align:center;border:1px dashed #444;border-radius:15px;color:var(--muted);grid-column:1/-1}.panel{padding:17px;margin-bottom:14px}.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.formgrid label{display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:13px}.formgrid input,.formgrid select{width:100%}.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:14px;z-index:10}.modal.open{display:flex}.dialog{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px;width:min(570px,100%);max-height:92vh;overflow:auto}.dialog h2{margin-top:0}.preview{max-width:100%;max-height:140px;object-fit:contain}.toast{position:fixed;bottom:18px;left:18px;background:var(--lime);color:#111;padding:12px 16px;border-radius:10px;display:none;z-index:20;max-width:90vw}.look{padding:15px;background:var(--panel2)}.lookparts{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.lookparts span{padding:8px 10px;border-radius:9px;background:#292e34;font-size:12px}.footer{padding:25px 0;color:var(--muted);font-size:12px}.chip{display:inline-block;border:1px solid var(--line);padding:5px 8px;border-radius:30px;font-size:11px;color:var(--muted);margin:2px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.nav{position:static;display:flex;overflow:auto;gap:3px}.nav button{white-space:nowrap;width:auto;text-align:center}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:580px){.wrap{padding:12px}.hero{padding:19px;display:block}.hero .row{margin-top:15px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.photo{height:125px}.stats{gap:6px}.stat{padding:9px}.formgrid,.two{grid-template-columns:1fr}.top{align-items:flex-start}.tools .field{flex:1;min-width:120px}}
 </style>
 </head>
 <body>
-<div class="shell">
-<header>
- <div class="brand"><span class="mark">F.</span> FITCHECK</div>
- <div class="userbar">
-  <span id="userEmail" class="meta"></span>
-  <button class="pill" id="signOut" hidden>تسجيل الخروج</button>
-  <button class="pill" id="lang">EN / عربي</button>
- </div>
-</header>
-<section class="auth-panel" id="authPanel">
- <div class="eyebrow">YOUR PERSONAL DIGITAL WARDROBE</div>
- <h2>أهلاً بيك في FITCHECK</h2>
- <p>سجّل دخولك أو أنشئ حسابًا جديدًا. دولابك هيتحفظ على حسابك وتقدر تفتحه من أي جهاز.</p>
- <div class="field"><label for="authName">الاسم (للحساب الجديد فقط)</label><input id="authName" autocomplete="name" placeholder="اسمك"></div>
- <div class="field"><label for="authEmail">البريد الإلكتروني</label><input id="authEmail" type="email" autocomplete="email" placeholder="name@example.com" required></div>
- <div class="field"><label for="authPassword">كلمة المرور</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="6 أحرف على الأقل" required></div>
- <div class="auth-actions"><button class="primary" id="signIn">تسجيل الدخول</button><button class="secondary" id="signUp">إنشاء حساب جديد</button></div>
- <div class="auth-note" id="authNote" role="status"></div>
-</section>
-<main id="mainApp" hidden>
-<section class="hero">
- <div>
-  <div class="eyebrow">YOUR CLOSET, REIMAGINED</div>
-  <h1 id="headline">لبسك كتير.<br>حيرتك أقل.</h1>
-  <p id="sub">اجمع دولابك في مكان واحد، واكتشف تنسيقات جديدة من القطع اللي عندك بالفعل. ستايلك، بطريقتك.</p>
-  <div class="actions">
-   <button class="primary" id="heroAdd">+ ضيف أول قطعة</button>
-   <button class="secondary" id="scrollLooks">نسّقلي أوتفيت</button>
-  </div>
- </div>
- <div class="art">LESS SHOPPING.<br>MORE STYLE.</div>
-</section>
-<section class="stats">
- <div class="stat"><strong id="count">0</strong><span>قطعة في دولابك</span></div>
- <div class="stat"><strong id="lookCount">0</strong><span>تنسيقات مقترحة</span></div>
- <div class="stat"><strong>2</strong><span>ستايل أساسي</span></div>
-</section>
-<section>
- <div class="section-head">
-  <div><h2>دولابي</h2><p>قطعك، ألوانك، اختياراتك.</p></div>
-  <div class="tabs" id="filters">
-   <button class="tab active" data-filter="all">الكل</button>
-   <button class="tab" data-filter="top">توبات</button>
-   <button class="tab" data-filter="bottom">بناطيل</button>
-   <button class="tab" data-filter="outer">جاكيتات</button>
-   <button class="tab" data-filter="shoes">أحذية</button>
-  </div>
- </div>
- <div class="grid" id="grid"></div>
-</section>
-<section id="catalogSection">
-  <div class="section-head">
-    <div>
-      <h2>مكتبة FITCHECK</h2>
-      <p>اختار القطع اللي عندك وضيفها لدولابك.</p>
-    </div>
-  </div>
-  <div class="controls">
-    <input id="catalogSearch" placeholder="ابحث عن قطعة...">
-    <select id="catalogCategory">
-      <option value="all">كل الأنواع</option>
-      <option value="top">توبات</option>
-      <option value="bottom">بناطيل</option>
-      <option value="outer">جاكيتات</option>
-      <option value="shoes">أحذية</option>
-    </select>
-  </div>
-  <div class="catalog-grid" id="catalogSectionGrid">
-    جاري تحميل المكتبة...
-  </div>
-</section> <section id="outfits">
- <div class="section-head"><div><h2>نسّقلي</h2><p>اختار مودك، وهنركّبلك لوكات من دولابك.</p></div></div>
- <div class="outfit-panel">
-  <div class="controls">
-   <select id="occasion"><option>يومي</option><option>خروجة</option><option>جامعة</option><option>خروجة بالليل</option></select>
-   <select id="style"><option>Streetwear</option><option>Smart Casual</option><option>Mix it up</option></select>
-   <button class="primary" id="generate">✨ اقترح أوتفيتس</button>
-  </div>
-  <div class="results" id="results"></div>
- </div>
-</section>
-<footer>FITCHECK — Prototype. Less shopping. More style.</footer>
-</main>
-</div>
-<div class="modal-back" id="back">
- <div class="modal">
-  <h2>ضيف قطعة جديدة</h2>
-  <p>سجّل قطعة من دولابك عشان تدخل في اقتراحات التنسيق.</p><button type="button" class="secondary" id="openCatalog">اختار من مكتبة FITCHECK</button>
-  <form id="form">
-   <div class="field"><label>صورة القطعة (اختياري)</label><input type="file" id="photo" accept="image/*"><div class="preview" id="preview">معاينة الصورة</div></div>
-   <div class="field"><label>اسم القطعة</label><input id="name" required placeholder="مثلاً: تيشيرت أسود"></div>
-   <div class="field"><label>النوع</label><select id="type"><option value="top">توب</option><option value="bottom">بنطلون</option><option value="outer">جاكيت</option><option value="shoes">حذاء</option></select></div>
-   <div class="field"><label>اللون</label><input id="color" placeholder="أسود، أبيض، أزرق..."></div>
-   <div class="field"><label>القَصّة</label><select id="fit"><option>Oversized</option><option>Regular</option><option>Relaxed</option><option>Slim</option></select></div>
-   <div class="modal-actions"><button type="button" class="secondary" id="cancel">إلغاء</button><button type="submit" class="primary">حفظ القطعة</button></div>
-  </form>
- </div>
-</div>
- <div class="modal-back" id="catalogBack">
-  <div class="modal">
-    <h2>مكتبة FITCHECK</h2>
-    <p>اختار القطع اللي عندك في دولابك.</p>
-    <div id="catalogGrid" class="grid"></div>
-    <div class="modal-actions">
-      <button type="button" class="secondary" id="closeCatalog">إغلاق</button>
-    </div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
+<div class="wrap">
+<header class="top"><div class="brand"><span class="mark">F.</span>FITCHECK</div><div class="row"><span id="userLabel" class="muted tiny"></span><button id="logout" class="btn hidden">تسجيل الخروج</button></div></header>
+
+<section id="auth" class="auth"><div class="panel">
+<div class="eyebrow">YOUR PERSONAL FASHION ASSISTANT</div><h1>أهلاً بيك في FITCHECK</h1><p class="muted">دولابك، تنسيقاتك، واكتشاف ستايلك في مكان واحد.</p>
+<label class="tiny muted">البريد الإلكتروني</label><input id="email" class="field" type="email" autocomplete="email" placeholder="name@example.com">
+<label class="tiny muted">كلمة المرور</label><input id="password" class="field" type="password" autocomplete="current-password" placeholder="6 أحرف على الأقل">
+<div class="row"><button id="login" class="btn primary">تسجيل الدخول</button><button id="signup" class="btn">إنشاء حساب</button></div><p id="authMsg" class="tiny"></p>
+</div></section>
+
+<main id="app" class="hidden">
+<section class="hero"><div><div class="eyebrow">YOUR CLOSET, REIMAGINED</div><h1>لبسك كتير.<br>حيرتك أقل.</h1><p class="muted">نظّم دولابك، اكتشف لوكات جديدة، وابني ستايلك من القطع اللي عندك.</p><div class="row"><button class="btn primary" data-go="wardrobe">افتح دولابي</button><button class="btn" data-go="generator">نسّقلي أوتفيت</button></div></div><div class="eyebrow">LESS SHOPPING.<br>MORE STYLE.</div></section>
+<div class="stats"><div class="stat"><b id="wardrobeCount">0</b><span class="tiny muted">قطعة في دولابك</span></div><div class="stat"><b id="wishlistCount">0</b><span class="tiny muted">في قائمة المشتريات</span></div><div class="stat"><b id="savedCount">0</b><span class="tiny muted">أوتفيت محفوظ</span></div></div>
+
+<div class="layout"><nav class="nav" id="nav">
+<button class="active" data-page="home">الرئيسية</button><button data-page="wardrobe">دولابي</button><button data-page="catalog">مكتبة FITCHECK</button><button data-page="wishlist">عايز أشتري</button><button data-page="generator">منسق الأوتفيت</button><button data-page="saved">أوتفيتاتي</button><button data-page="profile">ملف الستايل</button>
+</nav><div class="content">
+<section id="page-home" class="page"><div class="sectionhead"><div><h2>ابدأ من هنا</h2><p class="muted">إيه اللي حابب تعمله؟</p></div></div><div class="two"><div class="panel"><h3>ضيف ملابس لدولابك</h3><p class="muted">من الكاميرا أو المعرض أو مكتبة FITCHECK.</p><button class="btn primary" id="addOwn">+ إضافة قطعة</button></div><div class="panel"><h3>اكتشف ستايل جديد</h3><p class="muted">كوّن تنسيقات من القطع اللي تمتلكها.</p><button class="btn" data-go="generator">ابدأ التنسيق</button></div></div><div class="panel"><h3>آخر القطع المضافة</h3><div id="recent" class="grid"></div></div></section>
+
+<section id="page-wardrobe" class="page hidden"><div class="sectionhead"><div><h2>دولابي</h2><p class="muted">القطع اللي تمتلكها بالفعل.</p></div><button class="btn primary" id="addOwn2">+ ضيف قطعة</button></div><div class="tools"><input id="wardSearch" class="field" placeholder="ابحث عن قطعة..."><select id="wardType" class="field"><option value="all">كل الأنواع</option><option value="top">توبات</option><option value="bottom">بناطيل</option><option value="outer">جاكيتات</option><option value="shoes">أحذية</option><option value="accessory">إكسسوارات</option></select><select id="wardColor" class="field"><option value="all">كل الألوان</option><option>Black</option><option>White</option><option>Grey</option><option>Blue</option><option>Beige</option><option>Olive</option></select></div><div id="wardGrid" class="grid"></div></section>
+
+<section id="page-catalog" class="page hidden"><div class="sectionhead"><div><h2>مكتبة FITCHECK</h2><p class="muted">اختار القطع اللي عندك بالفعل أو ضيفها لقائمة المشتريات.</p></div></div><div class="tools"><input id="catSearch" class="field" placeholder="ابحث في المكتبة..."><select id="catType" class="field"><option value="all">كل الأنواع</option><option value="top">توبات</option><option value="bottom">بناطيل</option><option value="outer">جاكيتات</option><option value="shoes">أحذية</option><option value="accessory">إكسسوارات</option></select><select id="catStyle" class="field"><option value="all">كل الستايلات</option><option>Basic</option><option>Streetwear</option><option>Smart Casual</option><option>Formal</option><option>Sportswear</option></select></div><div id="catGrid" class="grid"></div></section>
+
+<section id="page-wishlist" class="page hidden"><div class="sectionhead"><div><h2>عايز أشتري</h2><p class="muted">القطع اللي نفسك تضيفها لدولابك.</p></div></div><div id="wishGrid" class="grid"></div></section>
+
+<section id="page-generator" class="page hidden"><div class="sectionhead"><div><h2>منسق الأوتفيت</h2><p class="muted">التنسيقات بتستخدم القطع المملوكة فقط.</p></div></div><div class="panel"><div class="tools"><select id="occasion" class="field"><option>يومي</option><option>جامعة</option><option>خروجة</option><option>خروجة بالليل</option><option>شغل</option></select><select id="style" class="field"><option>Streetwear</option><option>Smart Casual</option><option>Casual</option><option>Formal</option><option>Old Money</option><option>Minimal</option><option>Sporty</option><option>Mix</option></select><button id="generate" class="btn primary">✨ اقترح تنسيقات</button></div><p class="tiny muted">النسخة الحالية تركّب القطع الحقيقية من دولابك. صورة الموديل الافتراضي والطقس والتجربة الافتراضية تحتاج توصيل خدمة AI وطقس خارجية؛ لن نعرض صورة وهمية على إنها لبسك.</p></div><div id="looks" class="two"></div></section>
+
+<section id="page-saved" class="page hidden"><div class="sectionhead"><div><h2>أوتفيتاتي</h2><p class="muted">التنسيقات اللي حفظتها.</p></div></div><div id="savedGrid" class="two"></div></section>
+
+<section id="page-profile" class="page hidden"><div class="sectionhead"><div><h2>ملف الستايل</h2><p class="muted">علّم FITCHECK ذوقك.</p></div></div><div class="panel"><div class="formgrid"><label>الستايل المفضل<select id="prefStyle" class="field"><option>Streetwear</option><option>Smart Casual</option><option>Casual</option><option>Minimal</option><option>Old Money</option><option>Mix</option></select></label><label>القَصّة المفضلة<select id="prefFit" class="field"><option>Relaxed</option><option>Oversized</option><option>Regular</option><option>Slim</option></select></label><label>الألوان المفضلة<input id="prefColors" class="field" placeholder="Black, Grey, Beige"></label><label>ستايلات مش بتحبها<input id="disliked" class="field" placeholder="مثلاً: Formal"></label></div><button id="saveProfile" class="btn primary">حفظ التفضيلات</button><p id="profileMsg" class="tiny muted"></p></div></section>
+</div></div><div class="footer">FITCHECK · Personal AI Fashion Assistant</div></main></div>
+
+<div id="itemModal" class="modal"><div class="dialog"><div class="sectionhead"><h2>إضافة قطعة</h2><button class="btn ghost" id="closeItem">✕</button></div><div class="row"><button class="btn" id="chooseCatalog">اختار من المكتبة</button><label class="btn">كاميرا / معرض<input id="itemPhoto" type="file" accept="image/*" capture="environment" class="hidden"></label></div><img id="itemPreview" class="preview hidden"><div class="formgrid" style="margin-top:15px"><label>اسم القطعة<input id="itemName" class="field" placeholder="مثلاً: Black relaxed jeans"></label><label>النوع<select id="itemType" class="field"><option value="top">توب</option><option value="bottom">بنطلون</option><option value="outer">جاكيت</option><option value="shoes">حذاء</option><option value="accessory">إكسسوار</option></select></label><label>اللون<input id="itemColor" class="field" placeholder="Black"></label><label>القَصّة<select id="itemFit" class="field"><option>Relaxed</option><option>Oversized</option><option>Regular</option><option>Slim</option></select></label><label>الستايل<select id="itemStyle" class="field"><option>Basic</option><option>Streetwear</option><option>Smart Casual</option><option>Formal</option><option>Sportswear</option></select></label><label>الحالة<select id="itemStatus" class="field"><option value="owned">موجود عندي</option><option value="wishlist">عايز أشتريه</option></select></label></div><div class="row" style="justify-content:flex-end;margin-top:15px"><button id="saveItem" class="btn primary">حفظ القطعة</button></div></div></div>
+<div id="onboardModal" class="modal"><div class="dialog"><h2>ابدأ بتجهيز دولابك</h2><p class="muted">اختار من مكتبة FITCHECK القطع اللي تمتلكها بالفعل. تقدر تضيف باقي القطع بعدين.</p><div class="tools"><input id="onboardSearch" class="field" placeholder="ابحث عن قطعة..."><select id="onboardType" class="field"><option value="all">كل الأنواع</option><option value="top">توبات</option><option value="bottom">بناطيل</option><option value="outer">جاكيتات</option><option value="shoes">أحذية</option></select></div><div id="onboardGrid" class="grid"></div><div class="row" style="justify-content:flex-end;margin-top:15px"><button id="finishOnboard" class="btn primary">خلصت الاختيار</button></div></div></div>
+<div id="toast" class="toast"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// FITCHECK cloud edition — Supabase Auth + private per-user wardrobe.
+/* FITCHECK STAGING CONFIG */
 const SUPABASE_URL = "https://upfbqimzgbsjabrhqdyv.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_HmKpEiR_qe1LuuwDSpaA8A_1LO5jXx1";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-let currentUser = null;
-let items = [];
-let filter = "all", photoFile = null;
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_FvYsv9MhrBut4dUXXvPIAg_t7fRbs39";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const $ = id => document.getElementById(id);
-const typeEmoji = {top:"👕",bottom:"👖",outer:"🧥",shoes:"👟"};
-function authMessage(message, error=false){$("authNote").textContent=message;$("authNote").style.color=error?"#ff9b9b":"var(--lime)";}
-function toast(message){$("toast").textContent=message;$("toast").style.display="block";setTimeout(()=>$ ("toast").style.display="none",2500);}
-function setBusy(busy){$("signIn").disabled=busy;$("signUp").disabled=busy;}
-function showApp(user){
- currentUser=user;
- $("authPanel").hidden=!!user;
- $("mainApp").hidden=!user;
- $("signOut").hidden=!user;
- $("userEmail").textContent=user?user.email:"";
-}
-async function getPhotoUrl(path){
- if(!path)return "";
- const {data,error}=await supabaseClient.storage.from("clothes").createSignedUrl(path,3600);
- if(error){console.error(error);return "";}
- return data.signedUrl;
-}
-async function loadItems(){
- const {data,error}=await supabaseClient.from("clothing_items").select("id,user_id,name,category,color,fit,photo_path,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false});
- if(error){console.error(error);toast("مقدرناش نحمل الدولاب: "+error.message);return;}
- items=await Promise.all((data||[]).map(async row=>({...row,type:row.category,emoji:typeEmoji[row.category]||"👕",photoUrl:await getPhotoUrl(row.photo_path)})));
- render();looks();
-}
-async function uploadPhoto(file){
- if(!file)return null;
- if(!file.type.startsWith("image/"))throw new Error("اختار ملف صورة صحيح.");
- if(file.size>8*1024*1024)throw new Error("حجم الصورة لازم يكون أقل من 8 ميجابايت.");
- const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
- const path=`${currentUser.id}/${crypto.randomUUID()}.${ext}`;
- const {error}=await supabaseClient.storage.from("clothes").upload(path,file,{contentType:file.type,upsert:false});
- if(error)throw error;
- return path;
-}
-async function removePhoto(path){if(path)await supabaseClient.storage.from("clothes").remove([path]);}
-function render(){
- $("grid").innerHTML="";
- items.filter(x=>filter==="all"||x.type===filter).forEach(x=>{
-  const card=document.createElement("article");card.className="item";
-  const visual=document.createElement("div");visual.className="visual";
-  if(x.photoUrl){const img=document.createElement("img");img.src=x.photoUrl;img.alt=x.name;visual.append(img);}else visual.textContent=x.emoji||"👕";
-  const del=document.createElement("button");del.className="delete";del.textContent="×";del.title="حذف القطعة";
-  del.onclick=async()=>{if(!confirm("متأكد إنك عاوز تحذف القطعة دي؟"))return;del.disabled=true;const {error}=await supabaseClient.from("clothing_items").delete().eq("id",x.id).eq("user_id",currentUser.id);if(error){toast("فشل الحذف: "+error.message);del.disabled=false;return;}await removePhoto(x.photo_path);items=items.filter(y=>y.id!==x.id);render();looks();toast("اتحذفت القطعة");};
-  visual.append(del);
-  const body=document.createElement("div");body.className="item-body";
-  const title=document.createElement("div");title.className="item-title";title.textContent=x.name;
-  const meta=document.createElement("div");meta.className="meta";meta.textContent=(x.type||"")+" • "+(x.color||"")+(x.fit?" • "+x.fit:"");
-  body.append(title,meta);card.append(visual,body);$("grid").append(card);
- });
- const add=document.createElement("button");add.className="add-card";add.innerHTML="+<br><small>ضيف قطعة جديدة</small>";add.onclick=openModal;$("grid").append(add);
- $("count").textContent=items.length;
-}
-function looks(){
- $("results").innerHTML="";
- const tops=items.filter(x=>x.type==="top"),bottoms=items.filter(x=>x.type==="bottom"),outers=items.filter(x=>x.type==="outer"),shoes=items.filter(x=>x.type==="shoes");
- $("lookCount").textContent=(tops.length&&bottoms.length)?Math.min(3,Math.max(1,Math.min(tops.length,bottoms.length))):0;
- if(!tops.length||!bottoms.length){const msg=document.createElement("div");msg.className="look";msg.textContent=items.length===0?"دولابك لسه فاضي. ضيف أول قطعة من ملابسك عشان نبدأ نكوّن تنسيقات حقيقية.":"ضيف توب وبنطلون على الأقل عشان نقدر نقترح أوتفيت من ملابسك.";$("results").append(msg);return;}
- const names=["بسيط ونضيف","طبقات ستريت وير","سمارت كاجوال"];
- for(let i=0;i<Math.min(3,Math.max(tops.length,bottoms.length));i++){
-  const pieces=[tops[i%tops.length],bottoms[i%bottoms.length]];if(outers.length)pieces.push(outers[i%outers.length]);if(shoes.length)pieces.push(shoes[i%shoes.length]);
-  const box=document.createElement("div");box.className="look";const h=document.createElement("h3");h.textContent=names[i%names.length];box.append(h);
-  pieces.forEach(p=>{const line=document.createElement("p");line.textContent=(p.emoji||"•")+" "+p.name;box.append(line);});
-  const small=document.createElement("small");small.textContent="تنسيق مقترح من القطع اللي إنت ضفتها.";box.append(small);$("results").append(box);
- }
-}
-function openModal(){$("back").classList.add("open");}
-function closeModal(){$("back").classList.remove("open");$("form").reset();photoFile=null;$("preview").textContent="معاينة الصورة";}let catalogItems = [];
-
-function openCatalog() {
-  $("catalogBack").classList.add("open");
-  loadCatalog();
-}
-
-function closeCatalog() {
-  $("catalogBack").classList.remove("open");
-}
-
-async function loadCatalog() {
-  $("catalogGrid").textContent = "جاري تحميل المكتبة...";
-  const { data, error } = await supabaseClient
-    .from("catalog_items")
-    .select("id,name,category,subcategory,color,fit,style,image_url,is_active")
-    .eq("is_active", true)
-    .order("name");
-
-  if (error) {
-    $("catalogGrid").textContent = "خطأ في تحميل المكتبة: " + error.message;
-    return;
-  }
-
-  catalogItems = data || [];
-  renderCatalog();
-}
-
-function renderCatalog() {
-  const host = $("catalogGrid");
-  host.innerHTML = "";
-
-  const search = $("catalogModalSearch")?.value.toLowerCase() || "";
-  const category = $("catalogModalCategory")?.value || "all";
-
-  const filtered = catalogItems.filter(x =>
-    (category === "all" || x.category === category) &&
-    [x.name, x.color, x.style, x.subcategory]
-      .filter(Boolean).join(" ").toLowerCase().includes(search)
-  );
-
-  if (!filtered.length) {
-    host.textContent = "مفيش قطع مطابقة.";
-    return;
-  }
-
-  filtered.forEach(x => {
-    const card = document.createElement("button");
-    card.type = "button";
-    card.className = "item";
-
-    if (x.image_url) {
-      const img = document.createElement("img");
-      img.src = x.image_url;
-      img.style.cssText = "width:100%;height:130px;object-fit:contain;background:#222";
-      card.append(img);
-    }
-
-    const title = document.createElement("p");
-    title.textContent = x.name;
-    card.append(title);
-
-    const exists = items.some(i =>
-      i.name === x.name && i.type === x.category
-    );
-
-    if (exists) {
-      card.disabled = true;
-      title.textContent += " ✓ موجودة";
-    } else {
-      card.onclick = () => addCatalogItem(x, card);
-    }
-
-    host.append(card);
-  });
-}
-
-async function addCatalogItem(x, card) {
-  card.disabled = true;
-
-  const { data, error } = await supabaseClient
-    .from("clothing_items")
-    .insert({
-      user_id: currentUser.id,
-      name: x.name,
-      category: x.category,
-      color: x.color || null,
-      fit: x.fit || "Regular",
-      photo_path: null
-    })
-    .select()
-    .single();
-
-  if (error) {
-    card.disabled = false;
-    alert("فشل الحفظ: " + error.message);
-    return;
-  }
-
-  items.unshift({
-    ...data,
-    type: data.category,
-    emoji: typeEmoji[data.category] || "👕",
-    photoUrl: ""
-  });
-
-  render();
-  looks();
-  renderCatalog();
-  toast("اتضافت القطعة لدولابك");
-}
-
-const catalogControls = document.createElement("div");
-catalogControls.className = "controls";
-catalogControls.innerHTML = `
-  <input id="catalogModalSearch" placeholder="ابحث عن قطعة...">
-  <select id="catalogModalCategory">
-    <option value="all">كل الأنواع</option>
-    <option value="top">توبات</option>
-    <option value="bottom">بناطيل</option>
-    <option value="outer">جاكيتات</option>
-    <option value="shoes">أحذية</option>
-  </select>
-`;
-$("catalogGrid").before(catalogControls);
-
-$("catalogModalSearch").oninput = renderCatalog;
-$("catalogModalCategory").onchange = renderCatalog;
-$("openCatalog").onclick = openCatalog;
-$("closeCatalog").onclick = closeCatalog;
-$("catalogBack").onclick = e => {
-  if (e.target === $("catalogBack")) closeCatalog();
-};
-$("heroAdd").onclick=openModal;$("cancel").onclick=closeModal;
-$("scrollLooks").onclick=()=>$("outfits").scrollIntoView({behavior:"smooth"});
-$("generate").onclick=()=>{looks();toast("اتحدّثت اقتراحات الأوتفيتس");};
-$("filters").onclick=e=>{const b=e.target.closest("[data-filter]");if(!b)return;filter=b.dataset.filter;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render();};
-$("photo").onchange=e=>{photoFile=e.target.files[0]||null;if(!photoFile){$("preview").textContent="معاينة الصورة";return;}const reader=new FileReader();reader.onload=()=>{$("preview").innerHTML="";const img=document.createElement("img");img.src=reader.result;$("preview").append(img);};reader.readAsDataURL(photoFile);};
-$("form").onsubmit=async e=>{
- e.preventDefault();const submit=$("form").querySelector('[type="submit"]');submit.disabled=true;
- try{
-  const type=$("type").value;const photoPath=await uploadPhoto(photoFile);
-  const payload={user_id:currentUser.id,name:$("name").value.trim(),category:type,color:$("color").value.trim()||null,fit:$("fit").value,photo_path:photoPath};
-  const {data,error}=await supabaseClient.from("clothing_items").insert(payload).select("id,user_id,name,category,color,fit,photo_path,created_at").single();
-  if(error){if(photoPath)await removePhoto(photoPath);throw error;}
-  items.unshift({...data,type:data.category,emoji:typeEmoji[type],photoUrl:await getPhotoUrl(data.photo_path)});render();looks();closeModal();toast("اتحفظت القطعة على حسابك!");
- }catch(error){console.error(error);alert("ماقدرناش نحفظ القطعة: "+(error.message||"خطأ غير معروف"));}
- finally{submit.disabled=false;}
-};
-$("lang").onclick=()=>toast("تبديل اللغة هيتضاف في التحديث القادم");
-$("back").onclick=e=>{if(e.target===$("back"))closeModal();};
-$("signIn").onclick=async()=>{setBusy(true);authMessage("جاري تسجيل الدخول...");const {error}=await supabaseClient.auth.signInWithPassword({email:$("authEmail").value.trim(),password:$("authPassword").value});setBusy(false);if(error)authMessage(error.message,true);};
-$("signUp").onclick=async()=>{setBusy(true);authMessage("جاري إنشاء الحساب...");const email=$("authEmail").value.trim(),password=$("authPassword").value,displayName=$("authName").value.trim();if(password.length<6){setBusy(false);authMessage("كلمة المرور لازم تكون 6 أحرف على الأقل.",true);return;}const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name:displayName}}});setBusy(false);if(error){authMessage(error.message,true);return;}if(data.session){authMessage("تم إنشاء الحساب وتسجيل الدخول.");}else{authMessage("تم إنشاء الحساب. افتح بريدك الإلكتروني واضغط رابط التأكيد، ثم ارجع وسجّل الدخول.");}};
-$("signOut").onclick=async()=>{const {error}=await supabaseClient.auth.signOut();if(error)toast("تعذر تسجيل الخروج: "+error.message);};
-$("back").classList.remove("open");
-supabaseClient.auth.onAuthStateChange(async(_event,session)=>{const user=session?.user||null;showApp(user);if(user){await loadItems();}else{items=[];$("grid").innerHTML="";$("count").textContent="0";$("results").innerHTML="";}});
-(async()=>{const {data:{session}}=await supabaseClient.auth.getSession();showApp(session?.user||null);if(session?.user){await loadItems();}})();
+const emoji = {top:"👕",bottom:"👖",outer:"🧥",shoes:"👟",accessory:"🧢"};
+let user=null, wardrobe=[], wishlist=[], catalog=[], saved=[], profile={}, photoFile=null, onboardSelected=new Set();
+function toast(s){$("toast").textContent=s;$("toast").style.display="block";clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>$("toast").style.display="none",2600)}
+function authMsg(s,bad=false){$("authMsg").textContent=s;$("authMsg").style.color=bad?"#ff7777":"#d8ff68"}
+function safeText(v){return v==null?"":String(v)}
+function go(page){document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));$("page-"+page).classList.remove("hidden");document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));if(page==="catalog")loadCatalog();if(page==="wardrobe")renderWardrobe();if(page==="wishlist")renderWishlist();if(page==="saved")renderSaved();if(page==="profile")loadProfile();if(page==="generator")buildLooks()}
+document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>go(b.dataset.page));
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+async function enter(u){user=u;$("auth").classList.toggle("hidden",!!u);$("app").classList.toggle("hidden",!u);$("logout").classList.toggle("hidden",!u);$("userLabel").textContent=u?.email||"";if(u){await refreshAll();await maybeOnboard()}}
+async function refreshAll(){await Promise.all([loadWardrobe(),loadWishlist(),loadSaved()]);updateStats();renderRecent()}
+async function loadWardrobe(){const {data,error}=await sb.from("clothing_items").select("*").eq("user_id",user.id).order("created_at",{ascending:false});if(error){toast("خطأ تحميل الدولاب: "+error.message);return}wardrobe=await Promise.all((data||[]).map(async x=>({...x,photoUrl:await signedPhoto(x.photo_path)})))}
+async function loadWishlist(){const {data,error}=await sb.from("wishlist_items").select("*").eq("user_id",user.id).order("created_at",{ascending:false});if(error){toast("قائمة المشتريات: "+error.message);return}wishlist=data||[]}
+async function loadSaved(){const {data,error}=await sb.from("saved_outfits").select("*").eq("user_id",user.id).order("created_at",{ascending:false});if(error){toast("الأوتفيتات المحفوظة: "+error.message);return}saved=data||[]}
+async function signedPhoto(path){if(!path)return "";const {data,error}=await sb.storage.from("clothes").createSignedUrl(path,3600);return error?"":data.signedUrl}
+function updateStats(){$("wardrobeCount").textContent=wardrobe.length;$("wishlistCount").textContent=wishlist.length;$("savedCount").textContent=saved.length}
+function makeCard(x,kind){const el=document.createElement("article");el.className="card";const ph=document.createElement("div");ph.className="photo";const src=x.photoUrl||x.image_url;if(src){const im=document.createElement("img");im.src=src;im.alt=x.name||"clothing";ph.append(im)}else ph.textContent=emoji[x.category]||"👕";const body=document.createElement("div");body.className="cardbody";const title=document.createElement("b");title.textContent=x.name||"Clothing item";const meta=document.createElement("div");meta.className="tiny muted";meta.textContent=[x.category,x.color,x.fit,x.style].filter(Boolean).join(" · ");body.append(title,meta);const actions=document.createElement("div");actions.className="cardactions";
+if(kind==="catalog"||kind==="onboard"){const own=document.createElement("button");own.className="btn primary";own.textContent=kind==="onboard"?(onboardSelected.has(x.id)?"تم الاختيار ✓":"اختار القطعة"):"موجود عندي";own.onclick=()=>kind==="onboard"?toggleOnboard(x,own):catalogToWardrobe(x);actions.append(own);if(kind==="catalog"){const wish=document.createElement("button");wish.className="btn";wish.textContent="عايز أشتري";wish.onclick=()=>catalogToWish(x);actions.append(wish)}}else if(kind==="wish"){const own=document.createElement("button");own.className="btn primary";own.textContent="اشتريتها";own.onclick=()=>moveToOwned(x);const del=document.createElement("button");del.className="btn danger";del.textContent="حذف";del.onclick=()=>deleteWish(x);actions.append(own,del)}else{const wish=document.createElement("button");wish.className="btn";wish.textContent="نقل لقائمة الشراء";wish.onclick=()=>wardrobeToWish(x);const del=document.createElement("button");del.className="btn danger";del.textContent="حذف";del.onclick=()=>deleteOwned(x);actions.append(wish,del)}
+body.append(actions);el.append(ph,body);return el}
+function renderWardrobe(){const h=$("wardGrid");h.innerHTML="";const q=$("wardSearch").value.toLowerCase(),t=$("wardType").value,c=$("wardColor").value;const arr=wardrobe.filter(x=>(t==="all"||x.category===t)&&(c==="all"||(x.color||"").toLowerCase()===c.toLowerCase())&&[x.name,x.color,x.style].join(" ").toLowerCase().includes(q));arr.forEach(x=>h.append(makeCard(x,"owned")));if(!arr.length)h.innerHTML='<div class="empty">مفيش قطع مطابقة. ضيف ملابسك أو اختار من المكتبة.</div>'}
+function renderWishlist(){const h=$("wishGrid");h.innerHTML="";wishlist.forEach(x=>h.append(makeCard(x,"wish")));if(!wishlist.length)h.innerHTML='<div class="empty">قائمة المشتريات لسه فاضية.</div>'}
+function renderRecent(){const h=$("recent");h.innerHTML="";wardrobe.slice(0,4).forEach(x=>h.append(makeCard(x,"owned")));if(!wardrobe.length)h.innerHTML='<div class="empty">ضيف أول قطعة عشان نبدأ.</div>'}
+async function loadCatalog(){const h=$("catGrid");h.innerHTML='<div class="empty">جاري تحميل المكتبة...</div>';const {data,error}=await sb.from("catalog_items").select("*").eq("is_active",true).order("name");if(error){h.textContent="تعذر تحميل المكتبة: "+error.message;return}catalog=data||[];renderCatalog()}
+function filteredCatalog(){const q=$("catSearch").value.toLowerCase(),t=$("catType").value,s=$("catStyle").value;return catalog.filter(x=>(t==="all"||x.category===t)&&(s==="all"||x.style===s)&&[x.name,x.color,x.subcategory,x.style].filter(Boolean).join(" ").toLowerCase().includes(q))}
+function renderCatalog(){const h=$("catGrid");h.innerHTML="";filteredCatalog().forEach(x=>h.append(makeCard(x,"catalog")));if(!h.children.length)h.innerHTML='<div class="empty">مفيش قطع في البحث ده لسه.</div>'}
+async function catalogToWardrobe(x){if(wardrobe.some(i=>i.name===x.name&&i.category===x.category)){toast("القطعة موجودة بالفعل");return}const {data,error}=await sb.from("clothing_items").insert({user_id:user.id,name:x.name,category:x.category,color:x.color||null,fit:x.fit||"Regular",photo_path:null,subcategory:x.subcategory||null,style:x.style||null,pattern:x.pattern||null,fabric:x.fabric||null}).select().single();if(error){toast("فشل الإضافة: "+error.message);return}wardrobe.unshift({...data,photoUrl:""});updateStats();renderCatalog();renderRecent();toast("اتضافت لدولابك")}
+async function catalogToWish(x){const {error}=await sb.from("wishlist_items").insert({user_id:user.id,name:x.name,category:x.category,color:x.color||null,fit:x.fit||"Regular",style:x.style||null,image_url:x.image_url||null});if(error){toast("فشل الحفظ: "+error.message);return}await loadWishlist();updateStats();toast("اتضافت لقائمة المشتريات")}
+async function toggleOnboard(x,button){if(onboardSelected.has(x.id)){onboardSelected.delete(x.id);button.textContent="اختار القطعة"}else{onboardSelected.add(x.id);button.textContent="تم الاختيار ✓"}}
+async function maybeOnboard(){const {data,error}=await sb.from("user_profiles").select("onboarding_completed").eq("user_id",user.id).maybeSingle();if(error){toast("تعذر قراءة ملفك: "+error.message);return}if(!data?.onboarding_completed&&wardrobe.length===0){await loadCatalog();onboardSelected.clear();renderOnboard();$("onboardModal").classList.add("open")}}
+function renderOnboard(){const h=$("onboardGrid");h.innerHTML="";const q=$("onboardSearch").value.toLowerCase(),t=$("onboardType").value;catalog.filter(x=>(t==="all"||x.category===t)&&[x.name,x.color,x.subcategory].filter(Boolean).join(" ").toLowerCase().includes(q)).forEach(x=>h.append(makeCard(x,"onboard")));if(!h.children.length)h.innerHTML='<div class="empty">المكتبة لسه فاضية أو مفيش نتائج. تقدر تكمل وتضيف قطعك بنفسك.</div>'}
+$("finishOnboard").onclick=async()=>{const chosen=catalog.filter(x=>onboardSelected.has(x.id));for(const x of chosen){if(wardrobe.some(i=>i.name===x.name&&i.category===x.category))continue;const {data,error}=await sb.from("clothing_items").insert({user_id:user.id,name:x.name,category:x.category,color:x.color||null,fit:x.fit||"Regular",photo_path:null,subcategory:x.subcategory||null,style:x.style||null,pattern:x.pattern||null,fabric:x.fabric||null}).select().single();if(error){toast("حصل خطأ أثناء إضافة "+x.name+": "+error.message);return}wardrobe.push(data)}const {error}=await sb.from("user_profiles").upsert({user_id:user.id,onboarding_completed:true},{onConflict:"user_id"});if(error){toast("القطع اتحفظت لكن تعذر حفظ إكمال البداية: "+error.message);return}$("onboardModal").classList.remove("open");updateStats();renderRecent();toast("دولابك اتجهز! تقدر تضيف باقي القطع في أي وقت")}
+async function wardrobeToWish(x){const {error}=await sb.from("wishlist_items").insert({user_id:user.id,name:x.name,category:x.category,color:x.color,fit:x.fit,style:x.style,image_url:null});if(error){toast(error.message);return}await deleteOwned(x,false);await loadWishlist();updateStats();renderWishlist();toast("اتنقلت لقائمة المشتريات")}
+async function moveToOwned(x){const {data,error}=await sb.from("clothing_items").insert({user_id:user.id,name:x.name,category:x.category,color:x.color,fit:x.fit||"Regular",style:x.style||null,photo_path:null}).select().single();if(error){toast(error.message);return}const del=await sb.from("wishlist_items").delete().eq("id",x.id).eq("user_id",user.id);if(del.error){toast("اتضافت للدولاب لكن تعذر حذفها من القائمة");return}wardrobe.unshift(data);await loadWishlist();updateStats();renderRecent();renderWishlist();toast("مبروك! القطعة بقت في دولابك")}
+async function deleteWish(x){const {error}=await sb.from("wishlist_items").delete().eq("id",x.id).eq("user_id",user.id);if(error){toast(error.message);return}await loadWishlist();updateStats();renderWishlist()}
+async function deleteOwned(x,notify=true){const {error}=await sb.from("clothing_items").delete().eq("id",x.id).eq("user_id",user.id);if(error){toast(error.message);return}wardrobe=wardrobe.filter(y=>y.id!==x.id);if(x.photo_path)await sb.storage.from("clothes").remove([x.photo_path]);updateStats();renderWardrobe();renderRecent();if(notify)toast("اتحذفت القطعة")}
+function openItem(){$("itemModal").classList.add("open")}function closeItem(){$("itemModal").classList.remove("open");$("itemName").value="";$("itemColor").value="";$("itemPhoto").value="";$("itemPreview").classList.add("hidden");photoFile=null}
+$("addOwn").onclick=$("addOwn2").onclick=openItem;$("closeItem").onclick=closeItem;$("chooseCatalog").onclick=()=>{closeItem();go("catalog")};
+$("itemPhoto").onchange=e=>{photoFile=e.target.files[0]||null;if(photoFile){const url=URL.createObjectURL(photoFile);$("itemPreview").src=url;$("itemPreview").classList.remove("hidden")}};
+$("saveItem").onclick=async()=>{const name=$("itemName").value.trim();if(!name){toast("اكتب اسم القطعة");return}const type=$("itemType").value,status=$("itemStatus").value;let path=null;const btn=$("saveItem");btn.disabled=true;try{if(photoFile){if(photoFile.size>8*1024*1024)throw Error("الصورة أكبر من 8MB");const ext=(photoFile.name.split(".").pop()||"jpg").replace(/[^a-z0-9]/gi,"")||"jpg";path=user.id+"/"+crypto.randomUUID()+"."+ext;const up=await sb.storage.from("clothes").upload(path,photoFile,{contentType:photoFile.type});if(up.error)throw up.error}if(status==="owned"){const {data,error}=await sb.from("clothing_items").insert({user_id:user.id,name,category:type,color:$("itemColor").value.trim()||null,fit:$("itemFit").value,style:$("itemStyle").value,photo_path:path}).select().single();if(error)throw error;wardrobe.unshift({...data,photoUrl:await signedPhoto(path)})}else{const {error}=await sb.from("wishlist_items").insert({user_id:user.id,name,category:type,color:$("itemColor").value.trim()||null,fit:$("itemFit").value,style:$("itemStyle").value,image_url:null});if(error)throw error;await loadWishlist()}closeItem();updateStats();renderRecent();renderWardrobe();renderWishlist();toast("اتحفظت القطعة")}catch(e){if(path)await sb.storage.from("clothes").remove([path]);toast("مقدرناش نحفظ: "+(e.message||"خطأ غير معروف"))}finally{btn.disabled=false}};
+function buildLooks(){const tops=wardrobe.filter(x=>x.category==="top"),bottoms=wardrobe.filter(x=>x.category==="bottom"),outers=wardrobe.filter(x=>x.category==="outer"),shoes=wardrobe.filter(x=>x.category==="shoes");const h=$("looks");h.innerHTML="";if(!tops.length||!bottoms.length){h.innerHTML='<div class="empty">محتاج توب وبنطلون على الأقل عشان أقدر أركب تنسيق حقيقي من دولابك. ضيف البناطيل من المكتبة أو بنفسك.</div>';return}const n=Math.min(8,Math.max(tops.length,bottoms.length));for(let i=0;i<n;i++){const parts=[tops[i%tops.length],bottoms[(i*3)%bottoms.length]];if(outers.length)parts.push(outers[i%outers.length]);if(shoes.length)parts.push(shoes[i%shoes.length]);const box=document.createElement("div");box.className="look";const title=document.createElement("h3");title.textContent=["Clean everyday","Streetwear layers","Smart casual mix","Minimal look","Night out","Relaxed fit"][i%6];box.append(title);const desc=document.createElement("p");desc.className="tiny muted";desc.textContent="المناسبة: "+$("occasion").value+" · الستايل: "+$("style").value;box.append(desc);const list=document.createElement("div");list.className="lookparts";parts.forEach(x=>{const s=document.createElement("span");s.textContent=(emoji[x.category]||"•")+" "+x.name;list.append(s)});box.append(list);const save=document.createElement("button");save.className="btn primary";save.textContent="احفظ الأوتفيت";save.onclick=async()=>{const {error}=await sb.from("saved_outfits").insert({user_id:user.id,title:title.textContent,occasion:$("occasion").value,style:$("style").value,item_ids:parts.map(x=>x.id)});if(error){toast("فشل الحفظ: "+error.message);return}await loadSaved();updateStats();toast("اتحفظ الأوتفيت")};box.append(save);h.append(box)}}
+$("generate").onclick=buildLooks;
+async function loadProfile(){const {data,error}=await sb.from("user_profiles").select("*").eq("user_id",user.id).maybeSingle();if(error){toast("تعذر تحميل ملف الستايل: "+error.message);return}profile=data||{};$("prefStyle").value=profile.preferred_style||"Streetwear";$("prefFit").value=profile.preferred_fit||"Relaxed";$("prefColors").value=profile.preferred_colors||"";$("disliked").value=profile.disliked_styles||""}
+$("saveProfile").onclick=async()=>{const {error}=await sb.from("user_profiles").upsert({user_id:user.id,preferred_style:$("prefStyle").value,preferred_fit:$("prefFit").value,preferred_colors:$("prefColors").value,disliked_styles:$("disliked").value},{onConflict:"user_id"});$("profileMsg").textContent=error?"تعذر الحفظ: "+error.message:"اتحفظ ملف الستايل"};
+function renderSaved(){const h=$("savedGrid");h.innerHTML="";saved.forEach(x=>{const b=document.createElement("div");b.className="look";const t=document.createElement("h3");t.textContent=x.title||"Outfit";const p=document.createElement("p");p.className="tiny muted";p.textContent=(x.occasion||"")+" · "+(x.style||"");const d=document.createElement("button");d.className="btn danger";d.textContent="حذف";d.onclick=async()=>{const {error}=await sb.from("saved_outfits").delete().eq("id",x.id).eq("user_id",user.id);if(error){toast(error.message);return}await loadSaved();updateStats();renderSaved()};b.append(t,p,d);h.append(b)});if(!saved.length)h.innerHTML='<div class="empty">لسه مفيش أوتفيتات محفوظة.</div>'}
+$("wardSearch").oninput=renderWardrobe;$("wardType").onchange=renderWardrobe;$("wardColor").onchange=renderWardrobe;$("catSearch").oninput=renderCatalog;$("catType").onchange=renderCatalog;$("catStyle").onchange=renderCatalog;$("onboardSearch").oninput=renderOnboard;$("onboardType").onchange=renderOnboard;
+$("login").onclick=async()=>{authMsg("جاري تسجيل الدخول...");const {data,error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)authMsg(error.message,true);else await enter(data.user)};
+$("signup").onclick=async()=>{const email=$("email").value.trim(),password=$("password").value;if(password.length<6){authMsg("كلمة المرور لازم تكون 6 أحرف على الأقل.",true);return}authMsg("جاري إنشاء الحساب...");const {data,error}=await sb.auth.signUp({email,password});if(error)authMsg(error.message,true);else if(data.session)await enter(data.user);else authMsg("الحساب اتعمل. أكد بريدك الإلكتروني من الرسالة ثم سجّل الدخول.")};
+$("logout").onclick=async()=>{const {error}=await sb.auth.signOut();if(error)toast(error.message)};
+sb.auth.onAuthStateChange((_event,session)=>{if(session?.user){enter(session.user)}else{user=null;$("auth").classList.remove("hidden");$("app").classList.add("hidden");$("logout").classList.add("hidden");$("userLabel").textContent=""}});
+(async()=>{const {data,error}=await sb.auth.getSession();if(error)authMsg(error.message,true);if(data.session)await enter(data.session.user)})();
 </script>
-</body>
-</html>
+</body></html>
