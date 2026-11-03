@@ -251,7 +251,139 @@ function looks(){
  }
 }
 function openModal(){$("back").classList.add("open");}
-function closeModal(){$("back").classList.remove("open");$("form").reset();photoFile=null;$("preview").textContent="معاينة الصورة";}
+function closeModal(){$("back").classList.remove("open");$("form").reset();photoFile=null;$("preview").textContent="معاينة الصورة";}let catalogItems = [];
+
+function openCatalog() {
+  $("catalogBack").classList.add("open");
+  loadCatalog();
+}
+
+function closeCatalog() {
+  $("catalogBack").classList.remove("open");
+}
+
+async function loadCatalog() {
+  $("catalogGrid").textContent = "جاري تحميل المكتبة...";
+  const { data, error } = await supabaseClient
+    .from("catalog_items")
+    .select("id,name,category,subcategory,color,fit,style,image_url,is_active")
+    .eq("is_active", true)
+    .order("name");
+
+  if (error) {
+    $("catalogGrid").textContent = "خطأ في تحميل المكتبة: " + error.message;
+    return;
+  }
+
+  catalogItems = data || [];
+  renderCatalog();
+}
+
+function renderCatalog() {
+  const host = $("catalogGrid");
+  host.innerHTML = "";
+
+  const search = $("catalogModalSearch")?.value.toLowerCase() || "";
+  const category = $("catalogModalCategory")?.value || "all";
+
+  const filtered = catalogItems.filter(x =>
+    (category === "all" || x.category === category) &&
+    [x.name, x.color, x.style, x.subcategory]
+      .filter(Boolean).join(" ").toLowerCase().includes(search)
+  );
+
+  if (!filtered.length) {
+    host.textContent = "مفيش قطع مطابقة.";
+    return;
+  }
+
+  filtered.forEach(x => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "item";
+
+    if (x.image_url) {
+      const img = document.createElement("img");
+      img.src = x.image_url;
+      img.style.cssText = "width:100%;height:130px;object-fit:contain;background:#222";
+      card.append(img);
+    }
+
+    const title = document.createElement("p");
+    title.textContent = x.name;
+    card.append(title);
+
+    const exists = items.some(i =>
+      i.name === x.name && i.type === x.category
+    );
+
+    if (exists) {
+      card.disabled = true;
+      title.textContent += " ✓ موجودة";
+    } else {
+      card.onclick = () => addCatalogItem(x, card);
+    }
+
+    host.append(card);
+  });
+}
+
+async function addCatalogItem(x, card) {
+  card.disabled = true;
+
+  const { data, error } = await supabaseClient
+    .from("clothing_items")
+    .insert({
+      user_id: currentUser.id,
+      name: x.name,
+      category: x.category,
+      color: x.color || null,
+      fit: x.fit || "Regular",
+      photo_path: null
+    })
+    .select()
+    .single();
+
+  if (error) {
+    card.disabled = false;
+    alert("فشل الحفظ: " + error.message);
+    return;
+  }
+
+  items.unshift({
+    ...data,
+    type: data.category,
+    emoji: typeEmoji[data.category] || "👕",
+    photoUrl: ""
+  });
+
+  render();
+  looks();
+  renderCatalog();
+  toast("اتضافت القطعة لدولابك");
+}
+
+const catalogControls = document.createElement("div");
+catalogControls.className = "controls";
+catalogControls.innerHTML = `
+  <input id="catalogModalSearch" placeholder="ابحث عن قطعة...">
+  <select id="catalogModalCategory">
+    <option value="all">كل الأنواع</option>
+    <option value="top">توبات</option>
+    <option value="bottom">بناطيل</option>
+    <option value="outer">جاكيتات</option>
+    <option value="shoes">أحذية</option>
+  </select>
+`;
+$("catalogGrid").before(catalogControls);
+
+$("catalogModalSearch").oninput = renderCatalog;
+$("catalogModalCategory").onchange = renderCatalog;
+$("openCatalog").onclick = openCatalog;
+$("closeCatalog").onclick = closeCatalog;
+$("catalogBack").onclick = e => {
+  if (e.target === $("catalogBack")) closeCatalog();
+};
 $("heroAdd").onclick=openModal;$("cancel").onclick=closeModal;
 $("scrollLooks").onclick=()=>$("outfits").scrollIntoView({behavior:"smooth"});
 $("generate").onclick=()=>{looks();toast("اتحدّثت اقتراحات الأوتفيتس");};
