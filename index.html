@@ -117,7 +117,27 @@ footer{color:var(--muted);border-top:1px solid var(--line);padding:20px 0;font-s
  </div>
  <div class="grid" id="grid"></div>
 </section>
-<section id="outfits">
+<section id="catalogSection">
+  <div class="section-head">
+    <div>
+      <h2>مكتبة FITCHECK</h2>
+      <p>اختار القطع اللي عندك وضيفها لدولابك.</p>
+    </div>
+  </div>
+  <div class="controls">
+    <input id="catalogSearch" placeholder="ابحث عن قطعة...">
+    <select id="catalogCategory">
+      <option value="all">كل الأنواع</option>
+      <option value="top">توبات</option>
+      <option value="bottom">بناطيل</option>
+      <option value="outer">جاكيتات</option>
+      <option value="shoes">أحذية</option>
+    </select>
+  </div>
+  <div class="catalog-grid" id="catalogGrid">
+    جاري تحميل المكتبة...
+  </div>
+</section> <section id="outfits">
  <div class="section-head"><div><h2>نسّقلي</h2><p>اختار مودك، وهنركّبلك لوكات من دولابك.</p></div></div>
  <div class="outfit-panel">
   <div class="controls">
@@ -134,7 +154,7 @@ footer{color:var(--muted);border-top:1px solid var(--line);padding:20px 0;font-s
 <div class="modal-back" id="back">
  <div class="modal">
   <h2>ضيف قطعة جديدة</h2>
-  <p>سجّل قطعة من دولابك عشان تدخل في اقتراحات التنسيق.</p>
+  <p>سجّل قطعة من دولابك عشان تدخل في اقتراحات التنسيق.</p><button type="button" class="secondary" id="openCatalog">اختار من مكتبة FITCHECK</button>
   <form id="form">
    <div class="field"><label>صورة القطعة (اختياري)</label><input type="file" id="photo" accept="image/*"><div class="preview" id="preview">معاينة الصورة</div></div>
    <div class="field"><label>اسم القطعة</label><input id="name" required placeholder="مثلاً: تيشيرت أسود"></div>
@@ -144,6 +164,16 @@ footer{color:var(--muted);border-top:1px solid var(--line);padding:20px 0;font-s
    <div class="modal-actions"><button type="button" class="secondary" id="cancel">إلغاء</button><button type="submit" class="primary">حفظ القطعة</button></div>
   </form>
  </div>
+</div>
+ <div class="modal-back" id="catalogBack">
+  <div class="modal">
+    <h2>مكتبة FITCHECK</h2>
+    <p>اختار القطع اللي عندك في دولابك.</p>
+    <div id="catalogGrid" class="grid"></div>
+    <div class="modal-actions">
+      <button type="button" class="secondary" id="closeCatalog">إغلاق</button>
+    </div>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
